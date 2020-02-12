@@ -1,0 +1,16 @@
+/*AI Homework 1 By Cam Skubik-Peplaski, Michael Hautman, and Nick Steinmetz*/
+
+/*Need to figure out how to include list_pro.frl in this */
+
+/*Block Definitions*/
+((blocks (a b c d e f g h)) /*Not sure how many blocks we need here */
+
+/*Block Configurations - This is where the initial layout of the blocks is defined*/
+/*These layouts are arbitrary and subject to change*/
+((on Table c)(on c a)(on a b)(clear b))
+((on Table f)(on f d)(on d e)(on e g)(clear g))
+((on Table h)(clear h))
+
+/*Depth First Search*/
+
+/*Breadth First Search*/
