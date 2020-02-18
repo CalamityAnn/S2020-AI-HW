@@ -1,19 +1,28 @@
-/*AI Homework 1 By Cam Skubik-Peplaski, Michael Hautman, and Nick Steinmetz*/
+/*
+AI Priciples and Applications
+Assignment: Homework #1 
+By: Cam Skubik-Peplaski, Michael Hautman, and Nick Steinmetz
+*/
 
-/*Need to figure out how to include list_pro.frl in this */
-
-/*Including List Pro File*/
+/* Including List Pro File */
 load list_pro.frl
 
-/*Block Definitions*/
-((blocks (a b c d e f g h)) /*Not sure how many blocks we need here */
+/* Blocks Definitions */
+(
+    (blocks (a b c d e f))
+)
 
-/*Block Configurations - This is where the initial layout of the blocks is defined*/
-/*These layouts are arbitrary and subject to change*/
-((on Table c)(on c a)(on a b)(clear b))
-((on Table f)(on f d)(on d e)(on e g)(clear g))
-((on Table h)(clear h))
+/* Block X Definitions */
+(
+    (block X)
+        (blocks BLOCKS)
+        (member X BLOCKS)
+)
 
-/*Depth First Search*/
+/* Block Configurations - This is where the initial layout of the blocks is defined */
+/* These layouts are arbitrary and subject to change */
+(config ((on Table a)(on a b)(on b c)(on c d)(on d e)(on e f)(clear f)))
 
-/*Breadth First Search*/
+/* Depth First Search */
+
+/* Breadth First Search */
