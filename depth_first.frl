@@ -2,7 +2,7 @@
 the current path to be expanded starts with the goal node, that is:
 */
 
-((depthF ((X |T) |  PATHS) (X|T))
+((depthF ((X | T) |  PATHS) (X|T))
                (goal X))
 
 
@@ -75,7 +75,7 @@ X to the goal node G found in the knowledge base fact (goal G)
 */
 
 
-((go  ( ( (X HV L) | Y) | R) (X|Y) )
+((go (((X HV L) | Y) | R) (X|Y))
     (goal X))
 
 ((go (X|Y) Z)

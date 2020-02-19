@@ -21,7 +21,7 @@ load list_pro.frl
 
 /* Block Configurations - This is where the initial layout of the blocks is defined */
 /* These layouts are arbitrary and subject to change */
-(config ((on Table a)(on a b)(on b c)(on c d)(on d e)(on e f)(clear f)))
+((on Table a)(on a b)(on b c)(on c d)(on d e)(on e f)(clear f))
 
 /* Depth First Search */
 
