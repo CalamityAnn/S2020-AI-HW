@@ -1,0 +1,106 @@
+/* The block world problem: */
+
+((state 1 ((on a b)(on b c)(on c Table)(clear a)) ))
+((state  2 ((clear a) (clear b) (on a table) (on b table) (on c Table) (clear c)) ))
+((state 3 ((clear a) (clear b) (on a table) (on b table) (on c Table) (clear c)) )) ))
+
+((blocks ( a b c d e f g) ))
+
+((block X)(blocks B)(member X B))
+
+((path S1 S2) (member (clear X) S1) (block X)(move X Y Z S1 S2)) 
+
+/* where X is a block, Y or Z can be blocks or the table */
+
+/* move a block from one block onto another block */ 
+((move X Y Z S1 S2) 
+      (member (clear Z) S1) 
+      (negg eq Z X) 
+      (block Z) 
+      (block Y) 
+      (member (on X Y) S1) 
+       (subs (on X Y) S1 (on X Z) INT) 
+       (subs (clear Z) INT (clear Y) S2)(pp)(p Move  X from Y to Z to obtain S2)(pp)) 
+/* move a block from one block onto the table */ 
+((move X Y Table  S1 S2) 
+       (member (on X Y) S1) 
+       (block Y) 
+       (append ((clear Y)) S1 INT) 
+       (subs (on X Y) INT (on X table ) S2)(pp)(p Move  X from Y to the Table to obtain S2)(pp)) 
+/* move  a block from the table  onto another block */ 
+((move X Table Z S1 S2) 
+      (member (clear Z) S1) 
+      (negg eq Z X) 
+      (block Z) 
+      (member (on X table ) S1) 
+       (delete (clear Z) S1 INT ) 
+       (subs (on X table ) INT (on X Z) S2)(pp)(p Move  X from the Table  to Z to obtain S2)(pp)) 
+
+/* useful list processing predicates */
+((member H (H|_)))    % the head of a list is an element of that list
+
+((member E ( _| T ))
+        (member E T)) 	 %  otherwise, E is an element of the list if it
+                          % is an element of its tail 
+						  
+/* 
+(subs E1 OLD E2 NEW) holds if NEW is the list OLD in 
+which all occurrences of E1 are substitutes by E2 
+*/ 
+
+((subs _ () _ () )) 
+/* substituting anything in the empty list results in the empty list */
+
+/* 
+substituting the element equal to the head of the list by a new element 
+results in a list whose head is equal to the new element
+and the tail is obtained by substituting all occurrences 
+of elements equal to the "old head" by the new element 
+*/ 
+ ((subs H (H|T) H2 (H2 | T2)) 
+                       (subs H T H2 T2) 
+                       (!)) 
+/* otherwise */
+((subs H (H1|T1) H2 (H1|T2))
+          (subs H T1 H2 T2))  % in a list with the same head as 
+                                    % the OLD list and a "new" tail, obtained 
+                                    % by the substitution 
+
+
+/* ((del X L1 L2)) holds when L2 is L1 from which X has been deleted */
+
+((del _ () ()))
+((del H (H|T) T))  %(!))
+((del X(H|T) (H|T1))(negg eq X H)(del X T T1))
+
+/* append ...*/
+((append () L L))
+((append (H1|T1) L2 (H1|T))(append T1 L2 T))
+
+
+((seteq X X))
+((seteq X Y)(permutation X Y))
+
+
+((permutation () ())(!))  %I HAD OMITTED TO PUT A CUT HERE.  SHOULD WORK FINE NOW
+((permutation L (X|PL))(del X L DL)(permutation DL PL))
+
+((genpath  S S PSF (S|PSF)))
+(( genpath  S1 G PSF NEW) (path  S1 S2)
+    (not_yet_visited S2 PSF) 
+    ( genpath  S2 G (S1|PSF) NEW))
+
+((not_yet_visited STATE  PATH)
+   (member STATE  PATH)       % if there is a state in the list of states PATH   (permutation STATE S1)        % equal to the state STATE, it means that S WAS VISITED
+   (!)(fail))                 % and hence not_yet_visited must FAIL
+
+((not_yet_visited _ _))	% in all other cases it must succeed
+
+
+/* Try this query *
+?((state N1 S1)(state N2 S2)(pp)(p S1)(pp)(p S2)(genpath S1 S2 () P)(pp P)(fail))
+
+	
+
+
+ 
