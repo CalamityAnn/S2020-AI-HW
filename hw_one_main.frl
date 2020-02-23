@@ -1,0 +1,51 @@
+/*
+  AI Priciples and Applications
+  Assignment: Homework #1 
+  By: Cam Skubik-Peplaski, Michael Hautman, and Nick Steinmetz
+*/
+
+/* Including List Pro File */
+load list_pro
+load blocks_world
+
+/* Blocks Definitions */
+% (
+%     (blocks (a b c d))
+% )
+% blocks defined in BlocksWorld
+
+/* Block X Definitions */
+% (
+%     (block X)
+%         (blocks BLOCKS)
+%         (member X BLOCKS)
+% )
+% block predicate defined in BlocksWorld
+
+/* Block Configurations - This is where the initial layout of the blocks is defined */
+/* These layouts are arbitrary and subject to change */
+
+/* Initially: block a is on the table, b is on top of a, c is on top of b, and d is on the table */
+((state 4 (
+    (on a table)
+    (on b a)
+    (on c b)
+    (on d table)
+    (clear c)
+    (clear d)
+) ))
+
+/* Goal: block b is on the table, c is on top of b, d is on top of c, and a is on the table */
+((state 5 (
+    (on b table)
+    (on c b)
+    (on d c)
+    (on a table)
+    (clear a)
+    (clear d)
+) ))
+
+
+/* Depth First Search */
+
+
