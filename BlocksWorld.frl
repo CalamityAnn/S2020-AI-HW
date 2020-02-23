@@ -120,7 +120,8 @@ of elements equal to the "old head" by the new element
 
 
 /* permutation */
-((permutation () ())(!))    %I HAD OMITTED TO PUT A CUT HERE.  SHOULD WORK FINE NOW
+((permutation () ())
+    (!))    %I HAD OMITTED TO PUT A CUT HERE.  SHOULD WORK FINE NOW
 ((permutation L (X|PL))
     (del X L DL)
     (permutation DL PL))
@@ -128,7 +129,8 @@ of elements equal to the "old head" by the new element
 
 /* genpath */
 ((genpath  S S PSF (S|PSF)))
-((genpath  S1 G PSF NEW) (path  S1 S2)
+((genpath  S1 G PSF NEW) 
+    (path  S1 S2)
     (not_yet_visited S2 PSF) 
     (genpath  S2 G (S1|PSF) NEW))
 
@@ -142,10 +144,5 @@ of elements equal to the "old head" by the new element
 
 /* --------------------------------------------------------------- */
 
-/* Try this query *
-?((state N1 S1)(state N2 S2)(pp)(p S1)(pp)(p S2)(genpath S1 S2 () P)(pp P)(fail))
-
-	
-
-
- 
+/* Try this query
+?((state N1 S1)(state N2 S2)(pp)(p S1)(pp)(p S2)(genpath S1 S2 () P)(pp P)(fail)) */
