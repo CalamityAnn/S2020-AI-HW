@@ -26,10 +26,10 @@ load BlocksWorld.frl
 /* These layouts are arbitrary and subject to change */
 
 /* Initially: block a is on the table, b is on top of a, c is on top of b, and d is on the table */
-(state ((on a table)(on b a)(on c b)(on d table)(clear c)(clear d)))
+(state 4 ((on a table)(on b a)(on c b)(on d table)(clear c)(clear d)))
 
 /* Goal: block b is on the table, c is on top of b, d is on top of c, and a is on the table */
-(state ((on b table)(on c b)(on d c)(on a table)(clear a)(clear d)))
+(state 5 ((on b table)(on c b)(on d c)(on a table)(clear a)(clear d)))
 
 
 /* Depth First Search */
