@@ -1,61 +1,66 @@
 /*
-AI Priciples and Applications
-Assignment: Homework #1 
-By: Cam Skubik-Peplaski, Michael Hautman, and Nick Steinmetz
+  AI Priciples and Applications
+  Assignment: Homework #1 
+  By: Cam Skubik-Peplaski, Michael Hautman, and Nick Steinmetz
 */
 
 /* Including List Pro File */
 load list_pro.frl
+load BlocksWorld.frl
 
 /* Blocks Definitions */
-(
-    (blocks (a b c d))
-)
+% (
+%     (blocks (a b c d))
+% )
+% blocks defined in BlocksWorld
 
 /* Block X Definitions */
-(
-    (block X)
-        (blocks BLOCKS)
-        (member X BLOCKS)
-)
+% (
+%     (block X)
+%         (blocks BLOCKS)
+%         (member X BLOCKS)
+% )
+% block predicate defined in BlocksWorld
 
 /* Block Configurations - This is where the initial layout of the blocks is defined */
 /* These layouts are arbitrary and subject to change */
 
 /* Initially: block a is on the table, b is on top of a, c is on top of b, and d is on the table */
-(initialState ((on a table)(on b a)(on c b)(on d table)(clear c)(clear d)))
+(state ((on a table)(on b a)(on c b)(on d table)(clear c)(clear d)))
 
 /* Goal: block b is on the table, c is on top of b, d is on top of c, and a is on the table */
-(goalState ((on b table)(on c b)(on d c)(on a table)(clear a)(clear d)))
+(state ((on b table)(on c b)(on d c)(on a table)(clear a)(clear d)))
 
 /* How Blocks Can Move */
+% Moving defined in BlocksWorld
 /* Moving a block from one block to another block */
-((move X Y Z S1 S2) 
-    (member (clear Z) S1) 
-    (negg eq Z X) 
-    (block Z) 
-    (block Y) 
-    (member (on X Y) S1) 
-    (substitute (on X Y) S1 (on X Z) INT) 
-    (substitute (clear Z) INT (clear Y) S1))
+% ((move X Y Z S1 S2) 
+%     (member (clear Z) S1) 
+%     (negg eq Z X) 
+%     (block Z) 
+%     (block Y) 
+%     (member (on X Y) S1) 
+%     (substitute (on X Y) S1 (on X Z) INT) 
+%     (substitute (clear Z) INT (clear Y) S1))
 
 /* move  a block from one block onto the table */ 
-((move X Y table  S1 S2) 
-    (member (on X Y) S1) 
-    (block Y) 
-    (append ((clear Y)) S1 INT) 
-    (substitute (on X Y) INT (on X table ) S2)) 
+% ((move X Y table  S1 S2) 
+%     (member (on X Y) S1) 
+%     (block Y) 
+%     (append ((clear Y)) S1 INT) 
+%     (substitute (on X Y) INT (on X table ) S2)) 
 
 /* move  a block from the table  onto another block */ 
-((move X table Z S1 S2) 
-    (member (clear Z) S1) 
-    (negg eq Z X) 
-    (block Z) 
-    (member (on X table ) S1) 
-    (delete (clear Z) S1 INT ) 
-    (substitute (on X table ) INT (on X Z) S2)) 
+% ((move X table Z S1 S2) 
+%     (member (clear Z) S1) 
+%     (negg eq Z X) 
+%     (block Z) 
+%     (member (on X table ) S1) 
+%     (delete (clear Z) S1 INT ) 
+%     (substitute (on X table ) INT (on X Z) S2)) 
 
 /* Delete Definition */
+% Delete definied in BlocksWorld as del
 
 /* Depth First Search */
 
