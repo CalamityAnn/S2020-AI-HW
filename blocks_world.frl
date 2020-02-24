@@ -53,14 +53,14 @@
     (block Y) 
     (member (on X Y) S1)
       (subs (on X Y) S1 (on X Z) INT) 
-      (subs (clear Z) INT (clear Y) S2)(pp)
+      (subs (clear Z) INT (clear Y) S2)
       (p Move X from Y to Z to obtain S2)(pp)) 
 /* move a block from one block onto the table */ 
 ((move X Y Table S1 S2) 
     (member (on X Y) S1) 
     (block Y)
       (append ((clear Y)) S1 INT) 
-      (subs (on X Y) INT (on X table) S2)(pp)
+      (subs (on X Y) INT (on X table) S2)
       (p Move  X from Y to the Table to obtain S2)(pp))
 /* move  a block from the table  onto another block */ 
 ((move X Table Z S1 S2) 
@@ -69,7 +69,7 @@
     (block Z) 
     (member (on X table) S1)
       (del (clear Z) S1 INT) 
-      (subs (on X table) INT (on X Z) S2)(pp)
+      (subs (on X table) INT (on X Z) S2)
       (p Move  X from the Table  to Z to obtain S2)(pp)) 
 
 

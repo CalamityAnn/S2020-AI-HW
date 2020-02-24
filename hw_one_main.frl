@@ -4,8 +4,7 @@
   By: Cam Skubik-Peplaski, Michael Hautman, and Nick Steinmetz
 */
 
-%  Including List Pro File
-load list_pro
+%  Including BlocsWorld File
 load blocks_world
 
 
@@ -15,6 +14,11 @@ load blocks_world
     (reverse T RT)
     (append RT ( H ) R))
 
+% Length definition from list_pro
+((length () 0 ))
+((length (_|T) N)
+    (length T N1)
+    (sum N1 1 N))
 
 /*  
   Block Configurations - This is where the initial layout of the blocks is defined
@@ -23,55 +27,75 @@ load blocks_world
 
 % Initially: block a is on the table, b is on top of a, c is on top of b, and d is on the table
 ((state 4 (
-    (on a Table)
+    (on a table)
     (on b a)
     (on c b)
-    (on d Table)
+    (on d table)
     (clear c)
     (clear d)
 ) ))
 
 % Goal: block b is on the table, c is on top of b, d is on top of c, and a is on the table
 ((state 5 (
-    (on b Table)
+    (on b table)
     (on c b)
     (on d c)
-    (on a Table)
+    (on a table)
     (clear a)
     (clear d)
 ) ))
-
-% testing states, just one move to get between
 ((state 6 (
     (on a b)
-    (on b Table)
+    (on b table)
     (clear a)
 ) ))
 ((state 7 (
-    (on a Table)
-    (on b Table) 
+    (on a table)
+    (on b table) 
     (clear a) 
     (clear b)
 ) ))
-
+((state 8 (
+    (on a table)
+    (on b a)
+    (clear b)
+) ))
+((state 9 (
+    (on a b)
+    (on b c)
+    (on c table)
+    (clear a)
+) ))
+((state 10 (
+    (on c b)
+    (on b a)
+    (on a table)
+    (clear c)
+) ))
 
 % Depth First Search Wrapper
 ((depth_blocks I G)
     (seteq I G)
-    (p I is G or permutation of it.))
+    (p I is G or permutation of it.)(pp))
 ((depth_blocks I G)
     (kill goal)
     (addcl ((goal G)) )
-    (depth_first I MOves)
+    (depth_first I G () MOves)
+    (delcl ((goal G)) )
     (reverse MOves RMoves)
-    (forall ((member M RMoves)) ((pp M))(pp))
-    ((length MOves N)(p took N moves)(pp))
-    (delcl ((goal G)) ))
+    (pp)(p Moves)(pp :)
+    (forall ((member M RMoves)) ((pp M)))(pp)
+    (length MOves N)(p Takes N Moves)(pp))
 
 % Depth First Search
-((depth_first ( X|PSF ) ( X|PSF ))
+((depth_first S1 SN PSF (S1|PSF))
+    (seteq S1 SN))
+((depth_first X SN PSF ( X|PSF ))
     (goal X))
-((depth_first ( PAth|PSF ) FIN)
-    (genpath PAth NPath PSF NEW)
-    (append NEW PSF PTrace)
-    (depth_first PTrace FIN))
+((depth_first S1 SN PSF SOL)
+    (genpath S1 SN PSF ( PAth|TPath ))
+    (depth_first PAth SN TPath SOL))
+
+% Run Search
+?((state 10 G)(addcl ((goal G))))
+?((state 9 I)(state 10 G)(depth_blocks I G))
