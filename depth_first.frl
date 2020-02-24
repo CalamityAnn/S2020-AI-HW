@@ -3,15 +3,15 @@ the current path to be expanded starts with the goal node, that is:
 */
 
 ((depthF ((X | T) |  PATHS) (X|T))
-               (goal X))
+    (goal X))
 
 
 
 
 ((depthF (PAth | TPaths) SOL)
-           (expand PAth  NPaths)
-           (append NPaths TPaths NEWPATHS)
-           (depthF NEWPATHS SOL))
+    (expand PAth  NPaths)
+    (append NPaths TPaths NEWPATHS)
+    (depthF NEWPATHS SOL))
  
 
 
