@@ -1,0 +1,143 @@
+/*
+  AI Priciples and Applications
+  Assignment: Homework #1 
+  By: Cam Skubik-Peplaski, Michael Hautman, and Nick Steinmetz
+*/
+
+%  Including BlocsWorld File
+load blocks_world
+
+
+% Reverse definition from depth_first.frl
+((reverse () ()))
+((reverse ( H|T ) R)
+    (reverse T RT)
+    (append RT ( H ) R))
+
+% Length definition from list_pro
+((length () 0 ))
+((length (_|T) N)
+    (length T N1)
+    (sum N1 1 N))
+
+/*  
+  Block Configurations - This is where the initial layout of the blocks is defined
+  These layouts are arbitrary and subject to change 
+*/
+
+% Initially: block a is on the table, b is on top of a, c is on top of b, and d is on the table
+((state 4 (
+    (on a table)
+    (on b a)
+    (on c b)
+    (on d table)
+    (clear c)
+    (clear d)
+) ))
+
+% Goal: block b is on the table, c is on top of b, d is on top of c, and a is on the table
+((state 5 (
+    (on b table)
+    (on c b)
+    (on d c)
+    (on a table)
+    (clear a)
+    (clear d)
+) ))
+((state 6 (
+    (on a b)
+    (on b table)
+    (clear a)
+) ))
+((state 7 (
+    (on a table)
+    (on b table) 
+    (clear a) 
+    (clear b)
+) ))
+((state 8 (
+    (on a table)
+    (on b a)
+    (clear b)
+) ))
+((state 9 (
+    (on a b)
+    (on b c)
+    (on c table)
+    (clear a)
+) ))
+((state 10 (
+    (on c b)
+    (on b a)
+    (on a table)
+    (clear c)
+) ))
+
+% Depth First Search Wrapper
+((depth_blocks I G)
+    (seteq I G)
+    (p I is G or permutation of it.)(pp))
+((depth_blocks I G)
+    (kill goal)
+    (addcl ((goal G)) )
+    (depth_first I G () MOves)
+    (delcl ((goal G)) )
+    (reverse MOves RMoves)
+    (pp)(p Moves)(pp :)
+    (forall ((member M RMoves)) ((pp M)))(pp)
+    (length MOves N)(p Takes N Moves)(pp))
+
+% Depth First Search
+((depth_first S1 SN PSF (S1|PSF))
+    (seteq S1 SN))
+((depth_first X SN PSF ( X|PSF ))
+    (goal X))
+((depth_first S1 SN PSF SOL)
+    (genpath S1 SN PSF ( PAth|TPath ))
+    (depth_first PAth SN TPath SOL))
+
+% Run Timing
+
+?((cputime SYS1 START)
+    %1
+	(state 5 G)(addcl ((goal G)))
+    (state 4 I)(state 5 G)(depth_blocks I G)
+    %2
+    (state 5 G)(addcl ((goal G)))
+    (state 4 I)(state 5 G)(depth_blocks I G)
+    %3
+    (state 5 G)(addcl ((goal G)))
+    (state 4 I)(state 5 G)(depth_blocks I G)
+    %4
+    (state 5 G)(addcl ((goal G)))
+    (state 4 I)(state 5 G)(depth_blocks I G)
+    %5
+    (state 5 G)(addcl ((goal G)))
+    (state 4 I)(state 5 G)(depth_blocks I G)
+    %6
+    (state 5 G)(addcl ((goal G)))
+    (state 4 I)(state 5 G)(depth_blocks I G)
+    %7
+    (state 5 G)(addcl ((goal G)))
+    (state 4 I)(state 5 G)(depth_blocks I G)
+    %8
+    (state 5 G)(addcl ((goal G)))
+    (state 4 I)(state 5 G)(depth_blocks I G)
+    %9
+    (state 5 G)(addcl ((goal G)))
+    (state 4 I)(state 5 G)(depth_blocks I G)
+    %10
+    (state 5 G)(addcl ((goal G)))
+    (state 4 I)(state 5 G)(depth_blocks I G)
+    %1
+	(state 5 G)(addcl ((goal G)))
+    (state 4 I)(state 5 G)(depth_blocks I G)
+    %2
+    (state 5 G)(addcl ((goal G)))
+    (state 4 I)(state 5 G)(depth_blocks I G)
+    %3
+    (state 5 G)(addcl ((goal G)))
+    (state 4 I)(state 5 G)(depth_blocks I G)
+   
+	(cputime SYS2 ELAPSED)
+	(p program execution time: ELAPSED seconds))
