@@ -4,48 +4,74 @@
   By: Cam Skubik-Peplaski, Michael Hautman, and Nick Steinmetz
 */
 
-/* Including List Pro File */
+%  Including List Pro File
 load list_pro
 load blocks_world
 
-/* Blocks Definitions */
-% (
-%     (blocks (a b c d))
-% )
-% blocks defined in BlocksWorld
 
-/* Block X Definitions */
-% (
-%     (block X)
-%         (blocks BLOCKS)
-%         (member X BLOCKS)
-% )
-% block predicate defined in BlocksWorld
+% Reverse definition from depth_first.frl
+((reverse () ()))
+((reverse ( H|T ) R)
+    (reverse T RT)
+    (append RT ( H ) R))
 
-/* Block Configurations - This is where the initial layout of the blocks is defined */
-/* These layouts are arbitrary and subject to change */
 
-/* Initially: block a is on the table, b is on top of a, c is on top of b, and d is on the table */
+/*  
+  Block Configurations - This is where the initial layout of the blocks is defined
+  These layouts are arbitrary and subject to change 
+*/
+
+% Initially: block a is on the table, b is on top of a, c is on top of b, and d is on the table
 ((state 4 (
-    (on a table)
+    (on a Table)
     (on b a)
     (on c b)
-    (on d table)
+    (on d Table)
     (clear c)
     (clear d)
 ) ))
 
-/* Goal: block b is on the table, c is on top of b, d is on top of c, and a is on the table */
+% Goal: block b is on the table, c is on top of b, d is on top of c, and a is on the table
 ((state 5 (
-    (on b table)
+    (on b Table)
     (on c b)
     (on d c)
-    (on a table)
+    (on a Table)
     (clear a)
     (clear d)
 ) ))
 
+% testing states, just one move to get between
+((state 6 (
+    (on a b)
+    (on b Table)
+    (clear a)
+) ))
+((state 7 (
+    (on a Table)
+    (on b Table) 
+    (clear a) 
+    (clear b)
+) ))
 
-/* Depth First Search */
 
+% Depth First Search Wrapper
+((depth_blocks I G)
+    (seteq I G)
+    (p I is G or permutation of it.))
+((depth_blocks I G)
+    (kill goal)
+    (addcl ((goal G)) )
+    (depth_first I MOves)
+    (reverse MOves RMoves)
+    (forall ((member M RMoves)) ((pp M))(pp))
+    ((length MOves N)(p took N moves)(pp))
+    (delcl ((goal G)) ))
 
+% Depth First Search
+((depth_first ( X|PSF ) ( X|PSF ))
+    (goal X))
+((depth_first ( PAth|PSF ) FIN)
+    (genpath PAth NPath PSF NEW)
+    (append NEW PSF PTrace)
+    (depth_first PTrace FIN))
