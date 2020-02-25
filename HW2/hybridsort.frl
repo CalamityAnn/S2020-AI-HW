@@ -1,0 +1,203 @@
+/*
+  Assignment 2: Hybrid Sort
+  Class: AI Principles and Applications
+  Group: Cam Skubik-Peplaski, Nicholas Steinmetz, Micheal Hautman
+*/
+
+/* ------------------------------------------------------------ */
+
+/*
+  Utility predicates from list_pro
+*/
+% MEMBER
+  % the head of a list is an element of that list
+((member H ( H|_ )))
+  %  otherwise, E is an element of the list if it
+((member E ( _|T ))
+	  % is an element of its tail
+	(member E T)) 
+
+
+% APPEND
+  /*
+    (apppend L1 L2 L) holds if L is the list L1 followed by the list L2 .
+    To write this predicate we note the following: 
+      the head of L is the same as the head of L1
+      the tail of L is the tail of L1 followed by L2
+  */
+  % when L1 is () L is the same as L2 
+((append () L L))
+((append ( H1|T1 ) L2 ( H1|T ))
+            (append T1 L2 T))
+
+
+% LENGTH
+  /*
+    (length LIST N) holds when N is the length of (number of elements in) the list LIST:
+      The length of a non empty list is 1 + length of its tail;
+      The length of an empty list is 0. 
+      The length predicate makes use of the built in predicate sum (sum X Y Z) holds when it is true that X+Y is equal to Z
+  */
+((length () 0 ))
+((length ( _|T ) N)
+           (length T N1)
+           (sum N1 1 N))
+
+/* ------------------------------------------------------------ */
+
+/*
+  Utility predicates,
+    Based on HW doc starter code
+*/
+% RUN
+  % TODO: need to add a third case with two arguments, maybe a function to call?
+((run 0) (!))
+((run X)
+	(sum X -1 Y) 
+	(run Y))
+
+
+% GREATER THAN
+((greater X Y) 
+	(less_eq Y X))
+((greater_eq X Y)
+	(less Y X))
+
+
+% SWAP
+  % swap the first two elements if they are not in order
+((swap (X Y|T) (Y X|T) )
+	(greater_than X Y)) 
+  % swap elements in the tail
+((swap ( H|T ) ( H|T1 ) )
+	(swap T T1))
+  % NOTE: swap assumes that it will never be called on the empty list
+
+% INSERT
+  /*
+    (insert E SL SLE) holds when SLE is the list obtained by 
+    inserting the element E in the sorted list SL.
+    An element smaller than H is inserted at the front of the list 
+  */
+((insert X () ( X ))) 
+((insert E ( H|T ) ( E H|T ) )
+	(ordered T less)
+	(less E H)
+	(!)) 
+((insert E ( H|T ) ( H|T1 ))
+	(ordered T less)
+	(insert E T T1)) 
+
+
+% ORDERED
+  % the empty list is ordered in ANY order
+((ordered () _ )) 
+  % the list with 1 element is ordered in ANY order
+((ordered ( _ ) _ ))
+  % NOTE: ORDER here is less or greater predicate
+((ordered ( E1 E2|T ) ORDER)
+	(ORDER E1 E2)
+	(ordered ( E2|T ) ORDER))
+
+
+% SPLIT IN HALF
+((split_in_half ( X ) () ( X ))) 
+((split_in_half L L1 L2)
+	(length L N)
+	(division N 2 N1)
+	(length L1 N1)
+	(append L1 L2 L))
+
+
+% MERGE
+  % (merge S1 S2 S) S1 interleaved with S2 results in S
+((merge () L L))
+((merge L () L))
+((merge ( H1|T1 ) ( H2|T2 ) ( H1|T ))
+	(less H1 H2)
+	(merge T1 ( H2|T2 ) T))
+((merge ( H1|T1 ) ( H2|T2 ) ( H2|T ))
+	(negg less H1 H2)
+	(merge ( H1|T1 ) T2 T))
+
+
+% SPLIT
+((split _ () () ())) 
+((split X ( H|T ) ( H|SMALL ) BIG) 
+	(less H X)
+	(!) 
+	(split X T SMALL BIG)) 
+((split X ( H|T ) SMALL ( H|BIG ))
+	(split X T SMALL BIG))
+
+/* ------------------------------------------------------------ */
+
+/*
+  Sort predicates
+    Based on HW doc starter code
+    
+    Small Sorts:
+    - Bubble
+    - Insertion
+    
+    Large Sorts:
+    - Merge
+    - Quick
+*/
+% BUBBLE
+  % at least one swap is needed
+((bubbleSort L SL)
+	(swap L FILLINHERE) 
+	(!)
+	(bubbleSort L1 FILLINHERE)) 
+  % the list is already sorted
+((bubbleSort L FILLINHERE))
+
+
+% INSERTION
+  % insertion sort makes use of insert
+  % the empty list is sorted
+((insertionSort () ()))
+  % insert the head of the list into the sorted
+((insertionSort ( H|T ) SORTED)
+	(insertionSort T FILLINHERE) % tail of the list
+	(insert H T1 SORTED)) 
+
+
+% MERGE
+  % the empty list is sorted
+((mergeSort () ())) 
+((mergeSort ( X ) ( X ))(!))
+((mergeSort L SL)
+	(split_in_half L FILLINHERE FILLINHERE)
+	(mergeSort L1 S1)
+	(mergeSort FILLINHERE S2)
+	(merge S1 S2 FILLINHERE))
+
+
+% QUICK
+((quickSort () () ))
+((quickSort ( H|T ) SORTED)
+	(split H T SMALL BIG)
+	(quickSort FILLINHERE S)
+	(quickSort FILLINHERE B)
+	(append S ( H|B ) SORTED))
+
+
+% HYBRID
+((hybridSort LIST SMALL BIG T SLIST)
+	(length LIST L)
+	  % try it with and w/o the cut
+	(less L T)(!)
+	(SMALL LIST SLIST))
+((hybridSort LIST SMALL mergeSort T SLIST)
+	(split_in_half LIST L 1 L2)
+	(hybridSort L1 SMALL mergeSort T S1)
+	(FILLINHERE L2 SMALL mergeSort T S2)
+	(merge S1 S2 FILLINHERE))
+((hybridSort LIST SMALL quickSort T SLIST)
+	% Please be very careful!
+	FILLINHERE THE BODY OF THIS CLAUSE
+
+/* ------------------------------------------------------------ */
+
