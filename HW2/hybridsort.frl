@@ -67,7 +67,7 @@
 % SWAP
   % swap the first two elements if they are not in order
 ((swap (X Y|T) (Y X|T) )
-	(greater_than X Y)) 
+	(greater X Y)) 
   % swap elements in the tail
 ((swap ( H|T ) ( H|T1 ) )
 	(swap T T1))
@@ -151,7 +151,7 @@
 	(!)
 	(bubbleSort L1 SL)) 
   % the list is already sorted
-((bubbleSort L SL))
+((bubbleSort L L))
 
 
 % INSERTION
