@@ -147,11 +147,11 @@
 % BUBBLE
   % at least one swap is needed
 ((bubbleSort L SL)
-	(swap L FILLINHERE) 
+	(swap L L1) 
 	(!)
-	(bubbleSort L1 FILLINHERE)) 
+	(bubbleSort L1 SL)) 
   % the list is already sorted
-((bubbleSort L FILLINHERE))
+((bubbleSort L SL))
 
 
 % INSERTION
@@ -160,7 +160,7 @@
 ((insertionSort () ()))
   % insert the head of the list into the sorted
 ((insertionSort ( H|T ) SORTED)
-	(insertionSort T FILLINHERE) % tail of the list
+	(insertionSort T T1) % tail of the list
 	(insert H T1 SORTED)) 
 
 
@@ -169,18 +169,18 @@
 ((mergeSort () ())) 
 ((mergeSort ( X ) ( X ))(!))
 ((mergeSort L SL)
-	(split_in_half L FILLINHERE FILLINHERE)
+	(split_in_half L L1 L2)
 	(mergeSort L1 S1)
-	(mergeSort FILLINHERE S2)
-	(merge S1 S2 FILLINHERE))
+	(mergeSort L2 S2)
+	(merge S1 S2 SL))
 
 
 % QUICK
 ((quickSort () () ))
 ((quickSort ( H|T ) SORTED)
 	(split H T SMALL BIG)
-	(quickSort FILLINHERE S)
-	(quickSort FILLINHERE B)
+	(quickSort SMALL S)
+	(quickSort BIG B)
 	(append S ( H|B ) SORTED))
 
 
@@ -193,11 +193,11 @@
 ((hybridSort LIST SMALL mergeSort T SLIST)
 	(split_in_half LIST L 1 L2)
 	(hybridSort L1 SMALL mergeSort T S1)
-	(FILLINHERE L2 SMALL mergeSort T S2)
+	(hybridSort L2 SMALL mergeSort T S2)
 	(merge S1 S2 FILLINHERE))
 ((hybridSort LIST SMALL quickSort T SLIST)
 	% Please be very careful!
-	FILLINHERE THE BODY OF THIS CLAUSE
-
+	%FILLINHERE THE BODY OF THIS CLAUSE
+)
 /* ------------------------------------------------------------ */
 
