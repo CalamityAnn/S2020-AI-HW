@@ -191,13 +191,16 @@
 	(less L T)(!)
 	(SMALL LIST SLIST))
 ((hybridSort LIST SMALL mergeSort T SLIST)
-	(split_in_half LIST L 1 L2)
+	(split_in_half LIST L1 L2)
 	(hybridSort L1 SMALL mergeSort T S1)
 	(hybridSort L2 SMALL mergeSort T S2)
-	(merge S1 S2 FILLINHERE))
+	(merge S1 S2 SLIST))
 ((hybridSort LIST SMALL quickSort T SLIST)
 	% Please be very careful!
 	%FILLINHERE THE BODY OF THIS CLAUSE
-)
+  (split H T SMALL BIG)
+  %(hybridSort FINISH FILLING THIS IN)
+  %(hybridSort FINISH FILLING THIS IN)
+  (append S (H|B) SORTED))
 /* ------------------------------------------------------------ */
 
