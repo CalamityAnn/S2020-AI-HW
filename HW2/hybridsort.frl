@@ -195,12 +195,11 @@
 	(hybridSort L1 SMALL mergeSort T S1)
 	(hybridSort L2 SMALL mergeSort T S2)
 	(merge S1 S2 SLIST))
-((hybridSort LIST SMALL quickSort T SLIST)
+((hybridSort ( H|T ) SMALL quickSort T SLIST)
 	% Please be very careful!
-	%FILLINHERE THE BODY OF THIS CLAUSE
-  (split H T SMALL BIG)
-  %(hybridSort FINISH FILLING THIS IN)
-  %(hybridSort FINISH FILLING THIS IN)
-  (append S (H|B) SORTED))
+  (split H T LOW HIGH)
+  (hybridSort LOW SMALL quickSort T S)
+  (hybridSort HIGH SMALL quickSort T B)
+  (append S ( H|B ) SLIST))
 /* ------------------------------------------------------------ */
 
