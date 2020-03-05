@@ -50,16 +50,15 @@
     Based on HW doc starter code
 */
 % RUN
-  % TODO: need to add a third case with two arguments, maybe a function to call?
-((run 0) (!))
-((run X)
-	(sum X -1 Y) 
-	(run Y))
 ((runS 0 _ _ )(!))
 ((runS NUM SORT LIST)
   (SORT LIST _)
   (sum NUM -1 NUM1)
   (runS NUM1 SORT LIST))
+((runS NUM hybridSort SMALL BIG LIST COUNT)
+  (hybridSort LIST SMALL BIG COUNT _)
+  (sum NUM -1 NUM1)
+  (runS NUM1 hybridSort SMALL BIG LIST COUNT))
 
 ((timer NUM SORT LIST TIME)
   (cputime S1 ST)
@@ -67,7 +66,14 @@
   (runS NUM SORT LIST)
   (cputime S2 TIME)
   (pp)(p S2 TIME)(pp)
-  (p program execution time: TIME seconds))
+  (p program execution time: TIME seconds)(pp))
+((timer NUM hybridSort SMALL BIG LIST COUNT TIME)
+  (cputime S1 ST)
+  (pp)(p S1 ST)
+  (runS NUM hybridSort SMALL BIG LIST COUNT)
+  (cputime S2 TIME)
+  (pp)(p S2 TIME)(pp)
+  (p program execution time: TIME seconds)(pp))
 
 
 % GREATER THAN
@@ -207,12 +213,104 @@
 	(split_in_half LIST L1 L2)
 	(hybridSort L1 SMALL mergeSort T S1)
 	(hybridSort L2 SMALL mergeSort T S2)
-	(merge S1 S2 SLIST))
-((hybridSort ( H|T ) SMALL quickSort T SLIST)
-	% Please be very careful!
-  (split H T LOW HIGH)
+	(merge S1 S2 SLIST)
+  (p result: SLIST)(pp))
+((hybridSort ( H|R ) SMALL quickSort T SLIST)
+  (split H R LOW HIGH)
   (hybridSort LOW SMALL quickSort T S)
   (hybridSort HIGH SMALL quickSort T B)
-  (append S ( H|B ) SLIST))
+  (append S ( H|B ) SLIST)
+  (p result: SLIST)(pp))
+
 /* ------------------------------------------------------------ */
 
+/*
+  TESTS
+*/
+
+?((pp "((testlist (6 1 4 8 34 12 3 90 23 7 56 2)))")(pp))
+((testlist (6 1 4 8 34 12 3 90 23 7 56 2)))
+
+?((pp)(p "?((testlist L)(bubbleSort L SL)(pp SL)(pp))")(pp))
+?((testlist L)(bubbleSort L SL)(pp SL)(pp))
+?((pp)(p 1000 tests)(pp))
+?((testlist L)(timer 1000 bubbleSort L SL)(pp))
+?((pp)(p 10000 tests)(pp))
+?((testlist L)(timer 10000 bubbleSort L SL)(pp))
+
+?((pp)(p "??((testlist L)(insertionSort L SL)(pp SL)(pp))")(pp))
+?((testlist L)(insertionSort L SL)(pp SL)(pp))
+?((pp)(p 1000 tests)(pp))
+?((testlist L)(timer 1000 insertionSort L SL)(pp))
+?((pp)(p 10000 tests)(pp))
+?((testlist L)(timer 10000 insertionSort L SL)(pp))
+
+?((pp)(p "?((testlist L)(mergeSort L SL)(pp SL)(pp))")(pp))
+?((testlist L)(mergeSort L SL)(pp SL)(pp))
+?((pp)(p 1000 tests)(pp))
+?((testlist L)(timer 1000 mergeSort L SL)(pp))
+?((pp)(p 10000 tests)(pp))
+?((testlist L)(timer 10000 mergeSort L SL)(pp))
+
+?((pp)(p "?((testlist L)(quickSort L SL)(pp SL)(pp))")(pp))
+?((testlist L)(quickSort L SL)(pp SL)(pp))
+?((pp)(p 1000 tests)(pp))
+?((testlist L)(timer 1000 quickSort L SL)(pp))
+?((pp)(p 10000 tests)(pp))
+?((testlist L)(timer 10000 quickSort L SL)(pp))
+
+?((pp)(p "?((testlist L)(hybridSort L bubbleSort quickSort 5 SL)(pp SL)(pp))")(pp))
+?((testlist L)(hybridSort L bubbleSort quickSort 5 SL)(pp SL)(pp))
+?((pp)(p 1000 tests)(pp))
+?((testlist L)(timer 1000 hybridSort L bubbleSort quickSort 5 SL)(pp))
+?((pp)(p 10000 tests)(pp))
+?((testlist L)(timer 10000 hybridSort L bubbleSort quickSort 5 SL)(pp))
+
+?((pp)(p "?((testlist L)(hybridSort L bubbleSort mergeSort 5 SL)(pp SL)(pp))")(pp))
+?((testlist L)(hybridSort L bubbleSort mergeSort 5 SL)(pp SL)(pp))
+?((pp)(p 1000 tests)(pp))
+?((testlist L)(timer 1000 hybridSort L bubbleSort mergeSort 5 SL)(pp))
+?((pp)(p 10000 tests)(pp))
+?((testlist L)(timer 10000 hybridSort L bubbleSort mergeSort 5 SL)(pp))
+
+?((pp)(p "?((testlist L)(hybridSort L insertionSort quickSort 5 SL)(pp SL)(pp))")(pp))
+?((testlist L)(hybridSort L insertionSort quickSort 5 SL)(pp SL)(pp))
+?((pp)(p 1000 tests)(pp))
+?((testlist L)(timer 1000 hybridSort L insertionSort quickSort 5 SL)(pp))
+?((pp)(p 10000 tests)(pp))
+?((testlist L)(timer 10000 hybridSort L insertionSort quickSort 5 SL)(pp))
+
+?((pp)(p "?((testlist L)(hybridSort L insertionSort mergeSort 5 SL)(pp SL)(pp))")(pp))
+?((testlist L)(hybridSort L insertionSort mergeSort 5 SL)(pp SL)(pp))
+?((pp)(p 1000 tests)(pp))
+?((testlist L)(timer 1000 hybridSort L insertionSort mergeSort 5 SL)(pp))
+?((pp)(p 10000 tests)(pp))
+?((testlist L)(timer 10000 hybridSort L insertionSort mergeSort 5 SL)(pp))
+
+?((pp)(p "?((testlist L)(hybridSort L bubbleSort quickSort 15 SL)(pp SL)(pp))")(pp))
+?((testlist L)(hybridSort L bubbleSort quickSort 15 SL)(pp SL)(pp))
+?((pp)(p 1000 tests)(pp))
+?((testlist L)(timer 1000 hybridSort L bubbleSort quickSort 15 SL)(pp))
+?((pp)(p 10000 tests)(pp))
+?((testlist L)(timer 10000 hybridSort L bubbleSort quickSort 15 SL)(pp))
+
+?((pp)(p "?((testlist L)(hybridSort L bubbleSort mergeSort 15 SL)(pp SL)(pp))")(pp))
+?((testlist L)(hybridSort L bubbleSort mergeSort 15 SL)(pp SL)(pp))
+?((pp)(p 1000 tests)(pp))
+?((testlist L)(timer 1000 hybridSort L bubbleSort mergeSort 15 SL)(pp))
+?((pp)(p 10000 tests)(pp))
+?((testlist L)(timer 10000 hybridSort L bubbleSort mergeSort 15 SL)(pp))
+
+?((pp)(p "?((testlist L)(hybridSort L insertionSort quickSort 15 SL)(pp SL)(pp))")(pp))
+?((testlist L)(hybridSort L insertionSort quickSort 15 SL)(pp SL)(pp))
+?((pp)(p 1000 tests)(pp))
+?((testlist L)(timer 1000 hybridSort L insertionSort quickSort 15 SL)(pp))
+?((pp)(p 10000 tests)(pp))
+?((testlist L)(timer 10000 hybridSort L binsertionSort quickSort 15 SL)(pp))
+
+?((pp)(p "?((testlist L)(hybridSort L insertionSort mergeSort 15 SL)(pp SL)(pp))")(pp))
+?((testlist L)(hybridSort L insertionSort mergeSort 15 SL)(pp SL)(pp))
+?((pp)(p 1000 tests)(pp))
+?((testlist L)(timer 1000 hybridSort L insertionSort mergeSort 15 SL)(pp))
+?((pp)(p 10000 tests)(pp))
+?((testlist L)(timer 10000 hybridSort L insertionSort mergeSort 15 SL)(pp))
