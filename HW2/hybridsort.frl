@@ -55,6 +55,19 @@
 ((run X)
 	(sum X -1 Y) 
 	(run Y))
+((runS 0 _ _ )(!))
+((runS NUM SORT LIST)
+  (SORT LIST _)
+  (sum NUM -1 NUM1)
+  (runS NUM1 SORT LIST))
+
+((timer NUM SORT LIST TIME)
+  (cputime S1 ST)
+  (pp)(p S1 ST)
+  (runS NUM SORT LIST)
+  (cputime S2 TIME)
+  (pp)(p S2 TIME)(pp)
+  (p program execution time: TIME seconds))
 
 
 % GREATER THAN
