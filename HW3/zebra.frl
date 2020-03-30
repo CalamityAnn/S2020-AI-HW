@@ -1,0 +1,25 @@
+/*
+  Assignment 3: The Zebra Problem
+  Class: AI Principles and Applications
+  Group: Cam Skubik-Peplaski and Nicholas Steinmetz
+*/
+
+/* ------------------------------------------------------------ */
+
+%Knowledgebase
+    % (HouseColor Snack Drink Nationality Pets)
+
+    (member (Red _ _ English _) X) %Englishman lives in red house
+    (member (_ _ _ Spanish Dog) X) %Spaniard owns a dog
+    %Norwegian lives in the first house on the left
+    %Green house is immediately left to right of ivory house
+    %Man who eats Hershey-bars lives next to man with fox
+    %Kit-Kats are eaten in the yellow house
+    %Norwegian lives next to the blue house
+    (member (_ Smarties _ _ Snails) X) %Smarties eater owns snails
+    (member (_ Snickers OJ _ _) X) %Snickers eater drinks orange juice
+    (member (_ _ Tea Ukranian _) X) %Ukranian drinks tea
+    %Japanese eats milky-ways
+    %Kit-kats are eaten in a house next to the house where the horse is kept
+    %Coffee is drunk in the green house
+    %Milk is drunk in the middle house
