@@ -8,7 +8,7 @@
 
 %Knowledgebase
     % (HouseColor Snack Drink Nationality Pets)
-
+((info X)
     (member (Red _ _ English _) X) %Englishman lives in red house
     (member (_ _ _ Spanish Dog) X) %Spaniard owns a dog
     %Norwegian lives in the first house on the left
@@ -19,7 +19,36 @@
     (member (_ Smarties _ _ Snails) X) %Smarties eater owns snails
     (member (_ Snickers OJ _ _) X) %Snickers eater drinks orange juice
     (member (_ _ Tea Ukranian _) X) %Ukranian drinks tea
-    %Japanese eats milky-ways
+    (member (_ MilkyWays _ Japanese _) X)%Japanese eats milky-ways
     %Kit-kats are eaten in a house next to the house where the horse is kept
     %Coffee is drunk in the green house
     %Milk is drunk in the middle house
+)
+
+/*
+  Utility predicates from list_pro
+*/
+% MEMBER
+  % the head of a list is an element of that list
+((member H ( H|_ )))
+  %  otherwise, E is an element of the list if it
+((member E ( _|T ))
+	  % is an element of its tail
+	(member E T))
+
+%Checks if item is in knowledgebase
+((member MEM (MEM _ _ _ _) ))
+((member MEM (_ MEM _ _ _) ))
+((member MEM (_ _ MEM _ _) ))
+((member MEM (_ _ _ MEM _) ))
+((member MEM (_ _ _ _ MEM) ))
+
+%Checks if items are adjacent
+((adjacent X Y N)(adjacent X Y N))
+((adjacent X Y N)(adjacent X Y N))
+
+%Solves Zebra Puzzle
+((solveZebra ) %Need to add args here
+
+
+)
