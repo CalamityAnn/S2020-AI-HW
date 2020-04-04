@@ -9,20 +9,20 @@
 %Knowledgebase
     % (HouseColor Snack Drink Nationality Pets)
 ((info X)
-  (memberKB (Red _ _ English _) X)                  %Englishman lives in red house
-  (memberKB (_ _ _ Spanish Dog) X)                  %Spaniard owns a dog
-  %Norwegian lives in the first house on the left
+  (known (Red _ _ English _) X)                  %Englishman lives in red house
+  (known (_ _ _ Spanish Dog) X)                  %Spaniard owns a dog
+  % Norwegian lives in the first house on the left
   (rightOf (Green _ _ _ _) (Ivory _ _ _ _) X)       %Green house is immediately left to right of ivory house
   (adjacent (_ Hersheys _ _ _) (_ _ _ _ Fox) X)     %Man who eats Hershey-bars lives next to man with fox
-  (memberKB (Yellow KitKats _ _ _) X)               %Kit-Kats are eaten in the yellow house
+  (known (Yellow KitKats _ _ _) X)               %Kit-Kats are eaten in the yellow house
   (adjacent (_ _ _ Norwegian _) (Blue _ _ _ _) X)   %Norwegian lives next to the blue house
-  (memberKB (_ Smarties _ _ Snails) X)              %Smarties eater owns snails
-  (memberKB (_ Snickers OJ _ _) X)                  %Snickers eater drinks orange juice
-  (memberKB (_ _ Tea Ukranian _) X)                 %Ukranian drinks tea
-  (memberKB (_ MilkyWays _ Japanese _) X)           %Japanese eats milky-ways
+  (known (_ Smarties _ _ Snails) X)              %Smarties eater owns snails
+  (known (_ Snickers OJ _ _) X)                  %Snickers eater drinks orange juice
+  (known (_ _ Tea Ukranian _) X)                 %Ukranian drinks tea
+  (known (_ MilkyWays _ Japanese _) X)           %Japanese eats milky-ways
   (adjacent (_ KitKats _ _ _) (_ _ _ _ Horse) X)    %Kit-kats are eaten in a house next to the house where the horse is kept
-  (memberKB (Green _ Coffee _ _) X)                 %Coffee is drunk in the green house
-  %Milk is drunk in the middle house
+  (known (Green _ Coffee _ _) X)                 %Coffee is drunk in the green house
+  % Milk is drunk in the middle house
 )
 
 /*
@@ -31,41 +31,47 @@
 % MEMBER
   % the head of a list is an element of that list
 ((member H ( H|_ )))
-  %  otherwise, E is an element of the list if it
+  % otherwise, E is an element of the list if it
 ((member E ( _|T ))
 	  % is an element of its tail
 	(member E T))
 
-%Checks if item is in knowledgebase
-((memberKB MEM (MEM _ _ _ _) ))
-((memberKB MEM (_ MEM _ _ _) ))
-((memberKB MEM (_ _ MEM _ _) ))
-((memberKB MEM (_ _ _ MEM _) ))
-((memberKB MEM (_ _ _ _ MEM) ))
+% Checks if item is in knowledgebase
+((known MEM (MEM _ _ _ _) ))
+((known MEM (_ MEM _ _ _) ))
+((known MEM (_ _ MEM _ _) ))
+((known MEM (_ _ _ MEM _) ))
+((known MEM (_ _ _ _ MEM) ))
 
-%Checks if X is right of Y -> specifically used for statement number 4 in this assignment
+% Checks if X is right of Y -> specifically used for statement number 4 in this assignment
 ((rightOf X Y (_ _ _ X Y)))
 ((rightOf X Y (_ _ X Y _)))
 ((rightOf X Y (_ X Y _ _)))
 ((rightOf X Y (X Y _ _ _)))
 
-%Checks if items are adjacent
-((adjacent X Y N)(adjacent X Y N))
-((adjacent X Y N)(adjacent X Y N))
+% Checks if X is left of Y -> just in case we want reverse
+((leftOf X Y (_ _ _ Y X)))
+((leftOf X Y (_ _ Y X _)))
+((leftOf X Y (_ Y X _ _)))
+((leftOf X Y (Y X _ _ _)))
 
-%Solves Zebra Puzzle
+% Checks if items are adjacent
+((adjacent X Y N)(adjacent X Y N))
+((adjacent X Y N)(adjacent Y X N))
+
+% Solves Zebra Puzzle
 /*
   Arguments:
     1. X: Constraints specified to solve
     2. Y: What the user wants to print in the result
     3. Z: The returned list
 */
-((solveZebra X Y Z) %Need to add args here
+((solveZebra X Y Z) % Need to add args here
   %
 
 )
 
-%Printing Functions
+% Printing Functions
 ((printColor X)
 	(p "lives in the" X "colored home")
 	(pp " "))
@@ -87,22 +93,22 @@
 	(pp " "))
 
 
-%Puzzle Trial Runs
+% Puzzle Trial Runs
 
-  %Fril >?((solveZebra (Green _ _ _ _) ((all)) X))
-  %PUT OUTPUT HERE
+  % Fril >?((solveZebra (Green _ _ _ _) ((all)) X))
+  % PUT OUTPUT HERE
 
-  %Fril >?((solveZebra (_ KitKats _ _ _) ((all)) X))
-  %PUT OUTPUT HERE
+  % Fril >?((solveZebra (_ KitKats _ _ _) ((all)) X))
+  % PUT OUTPUT HERE
 
-  %Fril >?((solveZebra (_ _ OJ _ _) ((all)) X))
-  %PUT OUTPUT HERE
+  % Fril >?((solveZebra (_ _ OJ _ _) ((all)) X))
+  % PUT OUTPUT HERE
 
-  %Fril >?((solveZebra (_ _ _ Spanish _) ((all)) X))
-  %PUT OUTPUT HERE
+  % Fril >?((solveZebra (_ _ _ Spanish _) ((all)) X))
+  % PUT OUTPUT HERE
 
-  %Fril >?((solveZebra (_ _ _ _ Snails) ((all)) X))
-  %PUT OUTPUT HERE
+  % Fril >?((solveZebra (_ _ _ _ Snails) ((all)) X))
+  % PUT OUTPUT HERE
 
-  %Fril >?((findSolution (_ _ _ _ Dog) ((color)) X))
-  %PUT OUTPUT HERE
+  % Fril >?((findSolution (_ _ _ _ Dog) ((color)) X))
+  % PUT OUTPUT HERE
