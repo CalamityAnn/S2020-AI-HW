@@ -127,33 +127,55 @@
 
 )
 
-% Color Query
+% Color <-> Nationality Query
 ((color WHO WHAT)
   (knownColor WHO WHAT)(!) )
 ((color WHO WHAT)
   (puzzle P)(member (WHAT WHO _ _ _) P)
   (decide knownColor WHO WHAT))
 
-% Drink query
+% Drink <-> Nationality query
 ((drinks WHO WHAT)
   (knownToDrink WHO WHAT)(!) )
 ((drinks WHO WHAT)
   (puzzle P)(member (_ WHO _ WHAT _) P)
   (decide knownToDrink WHO WHAT))
 
-% Candy query
+% Candy <-> Nationality query
 ((eats WHO WHAT)
   (knownToEat WHO WHAT)(!) )
 ((eats WHO WHAT)
   (puzzle P)(member (_ WHO WHAT _ _) P)
   (decide knownToEat WHO WHAT))
 
-% Pet query
+% Pet <-> Nationality query
 ((pet WHO WHAT)
-  (knownToEat WHO WHAT)(!) )
+  (knownPet WHO WHAT)(!) )
 ((pet WHO WHAT)
   (puzzle P)(member (_ WHO _ _ WHAT) P)
   (decide knownPet WHO WHAT))
+
+
+% Drink <-> House query
+((drinks WHERE WHAT)
+  (knownDrinkIn WHERE WHAT)(!) )
+((drinks WHERE WHAT)
+  (puzzle P)(member (WHERE _ _ WHAT _) P)
+  (decide knownDrinkIn WHERE WHAT))
+
+% Candy <-> House query
+((eats WHERE WHAT)
+  (knownEatIn WHERE WHAT)(!) )
+((eats WHERE WHAT)
+  (puzzle P)(member (WHERE _ WHAT _ _) P)
+  (decide knownEatIn WHERE WHAT))
+
+% Pet <-> House query
+((pet WHERE WHAT)
+  (knownPetIn WHERE WHAT)(!) )
+((pet WHERE WHAT)
+  (puzzle P)(member (WHERE _ _ _ WHAT) P)
+  (decide knownPetIn WHERE WHAT))
 
 
 % Printing Functions
