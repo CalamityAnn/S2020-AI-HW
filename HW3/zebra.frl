@@ -83,15 +83,42 @@
 % Checks if X is in the middle of street
 ((middle X (_ _ X _ _) ))
 
+% Printing User Values
+((all))
+((color))
+((nationality))
+((snack))
+((drink))
+((pet))
+
 % Solves Zebra Puzzle
 /*
   Arguments:
-    1. X: Constraints specified to solve
-    2. Y: What the user wants to print in the result
+    1. X: Constraints specified to solve (COLOR NATIONALITY SNACK DRINK PET)
+    2. Y: What the user wants to print in the result (COLOR NATIONALITY SNACK DRINK PET)
     3. Z: The returned list
 */
 ((solveZebra X Y Z) % Need to add args here
-  %
+
+
+  % Sets values for specified contraints
+  (eq X (COL NAT SNA DRI PET))
+  (pp "Solutions Found:")
+  % Prints solutions based on what user specified for arg Y
+  (if (member (all) Y)
+    ((printColor COL)
+    (printNationality NAT)
+    (printSnack SNA)
+    (printDrink DRI)
+    (printPet PET)
+    (pp " "))
+    ((if (member (color) Y) ((printColor COL)))
+    (if (member (nationality) Y) ((printNationality NAT)))
+    (if (member (snack) Y) ((printSnack SNA)))
+    (if (member (drink) Y) ((printDrink DRI)))
+    (if (member (pet) Y) ((printPet PET)))
+    )
+  (fail)) 
 
 )
 
@@ -100,7 +127,7 @@
 	(p "lives in the" X "colored home")
 	(pp " "))
 
-((printCandy X)
+((printSnack X)
 	(p "eats" X)
 	(pp " "))
 
