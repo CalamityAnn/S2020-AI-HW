@@ -7,7 +7,7 @@
 /* ------------------------------------------------------------ */
 
 % Checks STREET setup against base conditions
-  % (HouseColor Nationality Snack Drink Pet)
+  % (HouseColor Nationality Candy Drink Pet)
 ((check STREET)
   % Englishman lives in red house
   (known ( Red Englishman _ _ _ ) STREET)
@@ -83,38 +83,43 @@
 % Checks if X is in the middle of street
 ((middle X (_ _ X _ _) ))
 
+% Checks if we've already done a query,
+% if not, add to knowledgebase
+((decide QUALITY WHO WHAT)
+  (QUALITY WHO WHAT)(!) )
+((decide QUALITY WHO WHAT)
+  (addcl ((QUALITY WHO WHAT)) ))
+
 % Printing User Values
 ((all))
 ((color))
 ((nationality))
-((snack))
+((candy))
 ((drink))
 ((pet))
 
 % Solves Zebra Puzzle
 /*
   Arguments:
-    1. X: Constraints specified to solve (COLOR NATIONALITY SNACK DRINK PET)
-    2. Y: What the user wants to print in the result (COLOR NATIONALITY SNACK DRINK PET)
+    1. X: Constraints specified to solve (COLOR NATIONALITY CANDY DRINK PET)
+    2. Y: What the user wants to print in the result (COLOR NATIONALITY CANDY DRINK PET)
     3. Z: The returned list
 */
 ((solveZebra X Y Z) % Need to add args here
-
-
   % Sets values for specified contraints
-  (eq X (COL NAT SNA DRI PET))
+  (eq X (COL NAT CAN DRI PET))
   (pp "Solutions Found:")
   % Prints solutions based on what user specified for arg Y
   (if (member (all) Y)
     ((printColor COL)
     (printNationality NAT)
-    (printSnack SNA)
+    (printCandy CAB)
     (printDrink DRI)
     (printPet PET)
     (pp " "))
     ((if (member (color) Y) ((printColor COL)))
     (if (member (nationality) Y) ((printNationality NAT)))
-    (if (member (snack) Y) ((printSnack SNA)))
+    (if (member (candy) Y) ((printCandy CAN)))
     (if (member (drink) Y) ((printDrink DRI)))
     (if (member (pet) Y) ((printPet PET)))
     )
@@ -122,12 +127,41 @@
 
 )
 
+% Color Query
+((color WHO WHAT)
+  (knownColor WHO WHAT)(!) )
+((color WHO WHAT)
+  (puzzle P)(member (WHAT WHO _ _ _) P)
+  (decide knownColor WHO WHAT))
+
+% Drink query
+((drinks WHO WHAT)
+  (knownToDrink WHO WHAT)(!) )
+((drinks WHO WHAT)
+  (puzzle P)(member (_ WHO _ WHAT _) P)
+  (decide knownToDrink WHO WHAT))
+
+% Candy query
+((eats WHO WHAT)
+  (knownToEat WHO WHAT)(!) )
+((eats WHO WHAT)
+  (puzzle P)(member (_ WHO WHAT _ _) P)
+  (decide knownToEat WHO WHAT))
+
+% Pet query
+((pet WHO WHAT)
+  (knownToEat WHO WHAT)(!) )
+((pet WHO WHAT)
+  (puzzle P)(member (_ WHO _ _ WHAT) P)
+  (decide knownPet WHO WHAT))
+
+
 % Printing Functions
 ((printColor X)
 	(p "lives in the" X "colored home")
 	(pp " "))
 
-((printSnack X)
+((printCandy X)
 	(p "eats" X)
 	(pp " "))
 
@@ -142,24 +176,3 @@
 ((printPet X)
 	(p "has the" X)
 	(pp " "))
-
-
-% Puzzle Trial Runs
-
-  % Fril >?((solveZebra (Green _ _ _ _) ((all)) X))
-  % PUT OUTPUT HERE
-
-  % Fril >?((solveZebra (_ KitKats _ _ _) ((all)) X))
-  % PUT OUTPUT HERE
-
-  % Fril >?((solveZebra (_ _ OJ _ _) ((all)) X))
-  % PUT OUTPUT HERE
-
-  % Fril >?((solveZebra (_ _ _ Spanish _) ((all)) X))
-  % PUT OUTPUT HERE
-
-  % Fril >?((solveZebra (_ _ _ _ Snails) ((all)) X))
-  % PUT OUTPUT HERE
-
-  % Fril >?((solveZebra (_ _ _ _ Dog) ((color)) X))
-  % PUT OUTPUT HERE
