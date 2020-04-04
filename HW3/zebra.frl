@@ -54,8 +54,14 @@
 ((adjacent X Y N)(adjacent X Y N))
 
 %Solves Zebra Puzzle
-((solveZebra ) %Need to add args here
-
+/*
+  Arguments:
+    1. X: Constraints specified to solve
+    2. Y: What the user wants to print in the result
+    3. Z: The returned list
+*/
+((solveZebra X Y Z) %Need to add args here
+  %
 
 )
 
@@ -81,4 +87,22 @@
 	(pp " "))
 
 
-%Puzzle Test Runs
+%Puzzle Trial Runs
+
+  %Fril >?((solveZebra (Green _ _ _ _) ((all)) X))
+  %PUT OUTPUT HERE
+
+  %Fril >?((solveZebra (_ KitKats _ _ _) ((all)) X))
+  %PUT OUTPUT HERE
+
+  %Fril >?((solveZebra (_ _ OJ _ _) ((all)) X))
+  %PUT OUTPUT HERE
+
+  %Fril >?((solveZebra (_ _ _ Spanish _) ((all)) X))
+  %PUT OUTPUT HERE
+
+  %Fril >?((solveZebra (_ _ _ _ Snails) ((all)) X))
+  %PUT OUTPUT HERE
+
+  %Fril >?((findSolution (_ _ _ _ Dog) ((color)) X))
+  %PUT OUTPUT HERE
