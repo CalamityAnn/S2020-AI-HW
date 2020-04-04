@@ -90,40 +90,14 @@
 ((decide QUALITY WHO WHAT)
   (addcl ((QUALITY WHO WHAT)) ))
 
-% Printing User Values
-((all))
-((color))
-((nationality))
-((candy))
-((drink))
-((pet))
 
 % Solves Zebra Puzzle
 /*
   Arguments:
-    1. X: Constraints specified to solve (COLOR NATIONALITY CANDY DRINK PET)
-    2. Y: What the user wants to print in the result (COLOR NATIONALITY CANDY DRINK PET)
-    3. Z: The returned list
+    1.
 */
-((solveZebra X Y Z) % Need to add args here
-  % Sets values for specified contraints
-  (eq X (COL NAT CAN DRI PET))
-  (pp "Solutions Found:")
-  % Prints solutions based on what user specified for arg Y
-  (if (member (all) Y)
-    ((printColor COL)
-    (printNationality NAT)
-    (printCandy CAB)
-    (printDrink DRI)
-    (printPet PET)
-    (pp " "))
-    ((if (member (color) Y) ((printColor COL)))
-    (if (member (nationality) Y) ((printNationality NAT)))
-    (if (member (candy) Y) ((printCandy CAN)))
-    (if (member (drink) Y) ((printDrink DRI)))
-    (if (member (pet) Y) ((printPet PET)))
-    )
-  (fail)) 
+((solveZebra ) %Add Args here
+ 
 
 )
 
