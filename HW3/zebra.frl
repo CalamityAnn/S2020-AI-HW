@@ -9,20 +9,20 @@
 %Knowledgebase
     % (HouseColor Snack Drink Nationality Pets)
 ((info X)
-    (member (Red _ _ English _) X) %Englishman lives in red house
-    (member (_ _ _ Spanish Dog) X) %Spaniard owns a dog
-    %Norwegian lives in the first house on the left
-    %Green house is immediately left to right of ivory house
-    %Man who eats Hershey-bars lives next to man with fox
-    %Kit-Kats are eaten in the yellow house
-    %Norwegian lives next to the blue house
-    (member (_ Smarties _ _ Snails) X) %Smarties eater owns snails
-    (member (_ Snickers OJ _ _) X) %Snickers eater drinks orange juice
-    (member (_ _ Tea Ukranian _) X) %Ukranian drinks tea
-    (member (_ MilkyWays _ Japanese _) X)%Japanese eats milky-ways
-    %Kit-kats are eaten in a house next to the house where the horse is kept
-    %Coffee is drunk in the green house
-    %Milk is drunk in the middle house
+  (memberKB (Red _ _ English _) X)                  %Englishman lives in red house
+  (memberKB (_ _ _ Spanish Dog) X)                  %Spaniard owns a dog
+  %Norwegian lives in the first house on the left
+  (rightOf (Green _ _ _ _) (Ivory _ _ _ _) X)       %Green house is immediately left to right of ivory house
+  (adjacent (_ Hersheys _ _ _) (_ _ _ _ Fox) X)     %Man who eats Hershey-bars lives next to man with fox
+  (memberKB (Yellow KitKats _ _ _) X)               %Kit-Kats are eaten in the yellow house
+  (adjacent (_ _ _ Norwegian _) (Blue _ _ _ _) X)   %Norwegian lives next to the blue house
+  (memberKB (_ Smarties _ _ Snails) X)              %Smarties eater owns snails
+  (memberKB (_ Snickers OJ _ _) X)                  %Snickers eater drinks orange juice
+  (memberKB (_ _ Tea Ukranian _) X)                 %Ukranian drinks tea
+  (memberKB (_ MilkyWays _ Japanese _) X)           %Japanese eats milky-ways
+  (adjacent (_ KitKats _ _ _) (_ _ _ _ Horse) X)    %Kit-kats are eaten in a house next to the house where the horse is kept
+  (memberKB (Green _ Coffee _ _) X)                 %Coffee is drunk in the green house
+  %Milk is drunk in the middle house
 )
 
 /*
@@ -37,11 +37,17 @@
 	(member E T))
 
 %Checks if item is in knowledgebase
-((member MEM (MEM _ _ _ _) ))
-((member MEM (_ MEM _ _ _) ))
-((member MEM (_ _ MEM _ _) ))
-((member MEM (_ _ _ MEM _) ))
-((member MEM (_ _ _ _ MEM) ))
+((memberKB MEM (MEM _ _ _ _) ))
+((memberKB MEM (_ MEM _ _ _) ))
+((memberKB MEM (_ _ MEM _ _) ))
+((memberKB MEM (_ _ _ MEM _) ))
+((memberKB MEM (_ _ _ _ MEM) ))
+
+%Checks if X is right of Y -> specifically used for statement number 4 in this assignment
+((rightOf X Y (_ _ _ X Y)))
+((rightOf X Y (_ _ X Y _)))
+((rightOf X Y (_ X Y _ _)))
+((rightOf X Y (X Y _ _ _)))
 
 %Checks if items are adjacent
 ((adjacent X Y N)(adjacent X Y N))
@@ -52,3 +58,27 @@
 
 
 )
+
+%Printing Functions
+((printColor X)
+	(p "lives in the" X "colored home")
+	(pp " "))
+
+((printCandy X)
+	(p "eats" X)
+	(pp " "))
+
+((printDrink X)
+	(p "drinks" X)
+	(pp " "))
+
+((printNationality X)
+	(p "is" X)
+	(pp " "))
+
+((printPet X)
+	(p "has the" X)
+	(pp " "))
+
+
+%Puzzle Test Runs
