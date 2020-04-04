@@ -6,23 +6,50 @@
 
 /* ------------------------------------------------------------ */
 
-%Knowledgebase
-    % (HouseColor Snack Drink Nationality Pets)
-((info X)
-  (known (Red _ _ English _) X)                  %Englishman lives in red house
-  (known (_ _ _ Spanish Dog) X)                  %Spaniard owns a dog
+% Checks STREET setup against base conditions
+  % (HouseColor Nationality Snack Drink Pet)
+((check STREET)
+  % Englishman lives in red house
+  (known ( Red Englishman _ _ _ ) STREET)
+
+  % Spaniard owns a dog
+  (known ( _ Spaniard _ _ Dog ) STREET)
+
   % Norwegian lives in the first house on the left
-  (rightOf (Green _ _ _ _) (Ivory _ _ _ _) X)       %Green house is immediately left to right of ivory house
-  (adjacent (_ Hersheys _ _ _) (_ _ _ _ Fox) X)     %Man who eats Hershey-bars lives next to man with fox
-  (known (Yellow KitKats _ _ _) X)               %Kit-Kats are eaten in the yellow house
-  (adjacent (_ _ _ Norwegian _) (Blue _ _ _ _) X)   %Norwegian lives next to the blue house
-  (known (_ Smarties _ _ Snails) X)              %Smarties eater owns snails
-  (known (_ Snickers OJ _ _) X)                  %Snickers eater drinks orange juice
-  (known (_ _ Tea Ukranian _) X)                 %Ukranian drinks tea
-  (known (_ MilkyWays _ Japanese _) X)           %Japanese eats milky-ways
-  (adjacent (_ KitKats _ _ _) (_ _ _ _ Horse) X)    %Kit-kats are eaten in a house next to the house where the horse is kept
-  (known (Green _ Coffee _ _) X)                 %Coffee is drunk in the green house
+  (eq STREET (( _ Norwegian _ _ _ ) _ _ _ _ ))
+
+  % Green house is immediately left to right of ivory house
+  (rightOf ( Green _ _ _ _ ) ( Ivory _ _ _ _ ) STREET)
+
+  % Man who eats Hershey-bars lives next to man with fox
+  (adjacent ( _ _ Hersheys _ _ ) ( _ _ _ _ Fox ) STREET)
+
+  % Kit-Kats are eaten in the yellow house
+  (known ( Yellow _ KitKats _ _ ) STREET)
+
+  % Norwegian lives next to the blue house
+  (adjacent ( _ Norwegian _ _ _ ) ( Blue _ _ _ _ ) STREET)
+
+  % Smarties eater owns snails
+  (known ( _ _ Smarties _ Snails ) STREET)
+
+  % Snickers eater drinks orange juice
+  (known ( _ _ Snickers OJ _ ) STREET)
+
+  % Ukranian drinks tea
+  (known ( _ Ukranian _ Tea _ ) STREET)
+
+  % Japanese eats milky-ways
+  (known ( _ Japanese MilkyWays _ _ ) STREET)
+
+  % Kit-kats are eaten in a house next to the house where the horse is kept
+  (adjacent ( _ _ KitKats _ _ ) ( _ _ _ _ Horse ) STREET)
+
+  % Coffee is drunk in the green house
+  (known ( Green _ _ Coffee _ ) STREET)
+
   % Milk is drunk in the middle house
+  (middle ( _ _ _ Milk _ ) STREET)
 )
 
 /*
@@ -36,28 +63,25 @@
 	  % is an element of its tail
 	(member E T))
 
-% Checks if item is in knowledgebase
-((known MEM (MEM _ _ _ _) ))
-((known MEM (_ MEM _ _ _) ))
-((known MEM (_ _ MEM _ _) ))
-((known MEM (_ _ _ MEM _) ))
-((known MEM (_ _ _ _ MEM) ))
+% Checks if MEM is member of KB
+((known MEM KB)
+  (member MEM KB))
 
 % Checks if X is right of Y -> specifically used for statement number 4 in this assignment
-((rightOf X Y (_ _ _ X Y)))
-((rightOf X Y (_ _ X Y _)))
-((rightOf X Y (_ X Y _ _)))
-((rightOf X Y (X Y _ _ _)))
+((rightOf X X _) (fail))
+((rightOf X Y ( Y X _ _ _ ) ))
+((rightOf X Y ( _ Y X _ _ ) ))
+((rightOf X Y ( _ _ Y X _ ) ))
+((rightOf X Y ( _ _ _ Y X ) ))
 
-% Checks if X is left of Y -> just in case we want reverse
-((leftOf X Y (_ _ _ Y X)))
-((leftOf X Y (_ _ Y X _)))
-((leftOf X Y (_ Y X _ _)))
-((leftOf X Y (Y X _ _ _)))
+% Checks if X and Y are adjacent in list N
+((adjacent X Y N)
+  (rightOf X Y N))
+((adjacent X Y N)
+  (rightOf Y X N))
 
-% Checks if items are adjacent
-((adjacent X Y N)(adjacent X Y N))
-((adjacent X Y N)(adjacent Y X N))
+% Checks if X is in the middle of street
+((middle X (_ _ X _ _) ))
 
 % Solves Zebra Puzzle
 /*
@@ -110,5 +134,5 @@
   % Fril >?((solveZebra (_ _ _ _ Snails) ((all)) X))
   % PUT OUTPUT HERE
 
-  % Fril >?((findSolution (_ _ _ _ Dog) ((color)) X))
+  % Fril >?((solveZebra (_ _ _ _ Dog) ((color)) X))
   % PUT OUTPUT HERE
