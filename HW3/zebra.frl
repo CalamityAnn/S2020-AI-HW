@@ -135,6 +135,13 @@
 ((solveZebra P) (solved P))
 ((solveZebra P)
   (kill solved)
+  (kill knownColor)
+  (kill knownDrinkIn)
+  (kill knownEatIn)
+  (kill knownPet)
+  (kill knownToDrink)
+  (kill knownToEat)
+  (kill knownPetIn)
   % INSERT SOLVING LOGIC
   (addcl ((solved P)) ))
 
