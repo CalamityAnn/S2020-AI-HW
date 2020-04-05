@@ -8,45 +8,45 @@
 
 % Checks STREET setup against base conditions
   % (HouseColor Nationality Candy Drink Pet)
-((check STREET)
+((base STREET)
   % Englishman lives in red house
-  (known ( Red Englishman _ _ _ ) STREET)
+  (member ( Red Englishman _ _ _ ) STREET)
 
   % Spaniard owns a dog
-  (known ( _ Spaniard _ _ Dog ) STREET)
+  (member ( _ Spaniard _ _ Dog ) STREET)
 
   % Norwegian lives in the first house on the left
-  (eq STREET (( _ Norwegian _ _ _ ) _ _ _ _ ))
+  (first ( _ Norwegian _ _ _ ) STREET)
 
-  % Green house is immediately left to right of ivory house
+  % Green house is immediately to right of ivory house
   (rightOf ( Green _ _ _ _ ) ( Ivory _ _ _ _ ) STREET)
 
   % Man who eats Hershey-bars lives next to man with fox
   (adjacent ( _ _ Hersheys _ _ ) ( _ _ _ _ Fox ) STREET)
 
   % Kit-Kats are eaten in the yellow house
-  (known ( Yellow _ KitKats _ _ ) STREET)
+  (member ( Yellow _ KitKats _ _ ) STREET)
 
   % Norwegian lives next to the blue house
   (adjacent ( _ Norwegian _ _ _ ) ( Blue _ _ _ _ ) STREET)
 
   % Smarties eater owns snails
-  (known ( _ _ Smarties _ Snails ) STREET)
+  (member ( _ _ Smarties _ Snails ) STREET)
 
   % Snickers eater drinks orange juice
-  (known ( _ _ Snickers OJ _ ) STREET)
+  (member ( _ _ Snickers OJ _ ) STREET)
 
   % Ukranian drinks tea
-  (known ( _ Ukranian _ Tea _ ) STREET)
+  (member ( _ Ukranian _ Tea _ ) STREET)
 
   % Japanese eats milky-ways
-  (known ( _ Japanese MilkyWays _ _ ) STREET)
+  (member ( _ Japanese MilkyWays _ _ ) STREET)
 
   % Kit-kats are eaten in a house next to the house where the horse is kept
   (adjacent ( _ _ KitKats _ _ ) ( _ _ _ _ Horse ) STREET)
 
   % Coffee is drunk in the green house
-  (known ( Green _ _ Coffee _ ) STREET)
+  (member ( Green _ _ Coffee _ ) STREET)
 
   % Milk is drunk in the middle house
   (middle ( _ _ _ Milk _ ) STREET)
@@ -63,10 +63,6 @@
 	  % is an element of its tail
 	(member E T))
 
-% Checks if MEM is member of KB
-((known MEM KB)
-  (member MEM KB))
-
 % Checks if X is right of Y -> specifically used for statement number 4 in this assignment
 ((rightOf X X _) (fail))
 ((rightOf X Y ( Y X _ _ _ ) ))
@@ -80,8 +76,12 @@
 ((adjacent X Y N)
   (rightOf Y X N))
 
+% Checks if X is first in street
+((first X (X _ _ _ _) ))
 % Checks if X is in the middle of street
 ((middle X (_ _ X _ _) ))
+% Checks if X is last in street
+((last X (_ _ _ _ X) ))
 
 % Checks if we've already done a query,
 % if not, add to knowledgebase
@@ -91,21 +91,18 @@
   (addcl ((QUALITY WHO WHAT)) ))
 
 
-% Solves Zebra Puzzle
-/*
-  Arguments:
-    1.
-*/
-((solveZebra ) %Add Args here
- 
-
-)
+% Solves Zebra puzzle
+((solveZebra P) (solved P))
+((solveZebra P)
+  (kill solved)
+  % INSERT SOLVING LOGIC
+  (addcl ((solved P)) ))
 
 % Color <-> Nationality Query
 ((color WHO WHAT)
   (knownColor WHO WHAT)(!) )
 ((color WHO WHAT)
-  (puzzle P)(member (WHAT WHO _ _ _) P)
+  (solveZebra P)(member (WHAT WHO _ _ _) P)
   (decide knownColor WHO WHAT))
 
 % Drink <-> Nationality query
@@ -119,14 +116,14 @@
 ((eats WHO WHAT)
   (knownToEat WHO WHAT)(!) )
 ((eats WHO WHAT)
-  (puzzle P)(member (_ WHO WHAT _ _) P)
+  (solveZebra P)(member (_ WHO WHAT _ _) P)
   (decide knownToEat WHO WHAT))
 
 % Pet <-> Nationality query
 ((pet WHO WHAT)
   (knownPet WHO WHAT)(!) )
 ((pet WHO WHAT)
-  (puzzle P)(member (_ WHO _ _ WHAT) P)
+  (solveZebra P)(member (_ WHO _ _ WHAT) P)
   (decide knownPet WHO WHAT))
 
 
@@ -134,21 +131,21 @@
 ((drinks WHERE WHAT)
   (knownDrinkIn WHERE WHAT)(!) )
 ((drinks WHERE WHAT)
-  (puzzle P)(member (WHERE _ _ WHAT _) P)
+  (solveZebra P)(member (WHERE _ _ WHAT _) P)
   (decide knownDrinkIn WHERE WHAT))
 
 % Candy <-> House query
 ((eats WHERE WHAT)
   (knownEatIn WHERE WHAT)(!) )
 ((eats WHERE WHAT)
-  (puzzle P)(member (WHERE _ WHAT _ _) P)
+  (solveZebra P)(member (WHERE _ WHAT _ _) P)
   (decide knownEatIn WHERE WHAT))
 
 % Pet <-> House query
 ((pet WHERE WHAT)
   (knownPetIn WHERE WHAT)(!) )
 ((pet WHERE WHAT)
-  (puzzle P)(member (WHERE _ _ _ WHAT) P)
+  (solveZebra P)(member (WHERE _ _ _ WHAT) P)
   (decide knownPetIn WHERE WHAT))
 
 
