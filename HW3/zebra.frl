@@ -123,6 +123,7 @@
 ((solveZebra P) (solved P))
 ((solveZebra P)
   % kill old solution & known query results
+  (pp "Deleting old and creating new solution...")(pp)
   (kill solved)
   (kill knownColor)
   (kill knownDrunkIn)
@@ -153,7 +154,7 @@
 ((drinks WHO WHAT)
   (knownToDrink WHO WHAT)(!) )
 ((drinks WHO WHAT)
-  (puzzle P)(member (_ WHO _ WHAT _) P)
+  (solveZebra P)(member (_ WHO _ WHAT _) P)
   (decide knownToDrink WHO WHAT))
 
 % Candy <-> Nationality query
