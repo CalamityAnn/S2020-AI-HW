@@ -10,10 +10,10 @@
   % (HouseColor Nationality Candy Drink Pet)
 ((base STREET)
   % Englishman lives in red house
-  (member ( Red Englishman _ _ _ ) STREET)
+  (onStreet ( Red Englishman _ _ _ ) STREET)
 
   % Spaniard owns a dog
-  (member ( _ Spaniard _ _ Dog ) STREET)
+  (onStreet ( _ Spaniard _ _ Dog ) STREET)
 
   % Norwegian lives in the first house on the left
   (first ( _ Norwegian _ _ _ ) STREET)
@@ -25,28 +25,28 @@
   (adjacent ( _ _ Hersheys _ _ ) ( _ _ _ _ Fox ) STREET)
 
   % Kit-Kats are eaten in the yellow house
-  (member ( Yellow _ KitKats _ _ ) STREET)
+  (onStreet ( Yellow _ KitKats _ _ ) STREET)
 
   % Norwegian lives next to the blue house
   (adjacent ( _ Norwegian _ _ _ ) ( Blue _ _ _ _ ) STREET)
 
   % Smarties eater owns snails
-  (member ( _ _ Smarties _ Snails ) STREET)
+  (onStreet ( _ _ Smarties _ Snails ) STREET)
 
   % Snickers eater drinks orange juice
-  (member ( _ _ Snickers OJ _ ) STREET)
+  (onStreet ( _ _ Snickers OrangeJ _ ) STREET)
 
   % Ukranian drinks tea
-  (member ( _ Ukranian _ Tea _ ) STREET)
+  (onStreet ( _ Ukranian _ Tea _ ) STREET)
 
   % Japanese eats milky-ways
-  (member ( _ Japanese MilkyWays _ _ ) STREET)
+  (onStreet ( _ Japanese MilkyWays _ _ ) STREET)
 
   % Kit-kats are eaten in a house next to the house where the horse is kept
   (adjacent ( _ _ KitKats _ _ ) ( _ _ _ _ Horse ) STREET)
 
   % Coffee is drunk in the green house
-  (member ( Green _ _ Coffee _ ) STREET)
+  (onStreet ( Green _ _ Coffee _ ) STREET)
 
   % Milk is drunk in the middle house
   (middle ( _ _ _ Milk _ ) STREET)
@@ -62,6 +62,27 @@
 ((member E ( _|T ))
 	  % is an element of its tail
 	(member E T))
+
+/*
+(length LIST N) holds when N is the length of (number of elements in)
+ the list LIST:
+    The length of a non empty list is 1 + length of its tail;
+    The length of an empty list is 0. 
+    The length predicate makes use of the built in predicate sum  (sum X Y Z) holds when it is true 
+    that X+Y is equal to Z
+*/
+((length () 0 ))
+((length (_|T) N)
+  (length T N1)
+  (sum N1 1 N))
+
+
+% Checks if X is on the street
+((onStreet X (X _ _ _ _)))
+((onStreet X (_ X _ _ _)))
+((onStreet X (_ _ X _ _)))
+((onStreet X (_ _ _ X _)))
+((onStreet X (_ _ _ _ X)))
 
 % Checks if X is right of Y -> specifically used for statement number 4 in this assignment
 ((rightOf X X _) (fail))
@@ -91,35 +112,35 @@
   (addcl ((QUALITY WHO WHAT)) ))
 
 % Domains
-((color (
+((colors (
   Red
   Blue
   Green
   Ivory
   Yellow
 )))
-((nationality (
+((nationalities (
   Englishman
   Spaniard
   Norwegian
   Japanese
   Ukranian
 )))
-((candy (
+((candies (
   Hersheys
   KitKats
   Smarties
   Snickers
   MilkyWays
 )))
-((drink (
+((drinks (
   Tea
-  OJ
+  OrangeJ
   Coffee
   Milk
   Wine
 )))
-((pet (
+((pets (
   Dog
   Horse
   Fox
@@ -156,7 +177,7 @@
   (kill knownPetIn)
 
   % solve
-  (solve (() () () () ()) P)
+  (base P)
 
   % assert solution into state
   (addcl ((solved P)) ))
