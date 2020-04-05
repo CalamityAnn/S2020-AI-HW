@@ -114,10 +114,14 @@
 
 % Checks if we've already done a query,
 % if not, add to knowledgebase
-((decide QUALITY WHO WHAT)
-  (QUALITY WHO WHAT)(!) )
-((decide QUALITY WHO WHAT)
-  (addcl ((QUALITY WHO WHAT)) ))
+((decide2 QUALITY ONE TWO)
+  (QUALITY ONE TWO)(!) )
+((decide2 QUALITY ONE TWO)
+  (addcl ((QUALITY ONE TWO)) ))
+((decide3 QUALITY ONE TWO THREE)
+  (QUALITY ONE TWO THREE)(!) )
+((decide3 QUALITY ONE TWO THREE)
+  (addcl ((QUALITY ONE TWO THREE)) ))
 
 % Solves Zebra puzzle
 ((solveZebra P) (solved P))
@@ -148,28 +152,28 @@
   (knownColor WHO WHAT)(!) )
 ((isColored WHO WHAT)
   (solveZebra P)(member (WHAT WHO _ _ _) P)
-  (decide knownColor WHO WHAT))
+  (decide2 knownColor WHO WHAT))
 
 % Drink <-> Nationality query
 ((drinks WHO WHAT)
   (knownToDrink WHO WHAT)(!) )
 ((drinks WHO WHAT)
   (solveZebra P)(member (_ WHO _ WHAT _) P)
-  (decide knownToDrink WHO WHAT))
+  (decide2 knownToDrink WHO WHAT))
 
 % Candy <-> Nationality query
 ((eats WHO WHAT)
   (knownToEat WHO WHAT)(!) )
 ((eats WHO WHAT)
   (solveZebra P)(member (_ WHO WHAT _ _) P)
-  (decide knownToEat WHO WHAT))
+  (decide2 knownToEat WHO WHAT))
 
 % Pet <-> Nationality query
 ((hasPet WHO WHAT)
   (knownPet WHO WHAT)(!) )
 ((hasPet WHO WHAT)
   (solveZebra P)(member (_ WHO _ _ WHAT) P)
-  (decide knownPet WHO WHAT))
+  (decide2 knownPet WHO WHAT))
 
 
 % Drink <-> House query
@@ -177,21 +181,42 @@
   (knownDrunkIn WHERE WHAT)(!) )
 ((drunkIn WHAT WHERE)
   (solveZebra P)(member (WHERE _ _ WHAT _) P)
-  (decide knownDrunkIn WHERE WHAT))
+  (decide2 knownDrunkIn WHERE WHAT))
 
 % Candy <-> House query
 ((eatenIn WHAT WHERE)
   (knownEatenIn WHERE WHAT)(!) )
 ((eatenIn WHAT WHERE)
   (solveZebra P)(member (WHERE _ WHAT _ _) P)
-  (decide knownEatenIn WHERE WHAT))
+  (decide2 knownEatenIn WHERE WHAT))
 
 % Pet <-> House query
 ((petIn WHAT WHERE)
   (knownPetIn WHERE WHAT)(!) )
 ((petIn WHAT WHERE)
   (solveZebra P)(member (WHERE _ _ _ WHAT) P)
-  (decide knownPetIn WHERE WHAT))
+  (decide2 knownPetIn WHERE WHAT))
+
+% Nationality <-> Drink <-> House query
+((whoDrinksIn WHO WHAT WHERE)
+  (knownWhoDrinksIn WHO WHERE WHAT)(!) )
+((whoDrinksIn WHO WHAT WHERE)
+  (solveZebra P)(member (WHERE WHO _ WHAT _ ) P)
+  (decide3 knownWhoDrinksIn WHO WHERE WHAT))
+
+% Nationality <-> Pet <-> House query
+((whoHasPetIn WHO WHAT WHERE)
+  (knownWhoHasPetIn WHO WHERE WHAT)(!) )
+((whoHasPetIn WHO WHAT WHERE)
+  (solveZebra P)(member (WHERE WHO _ _ WHAT ) P)
+  (decide3 knownWhoHasPetIn WHO WHERE WHAT))
+
+% Nationality <-> Candy <-> House query
+((whoEatsIn WHO WHAT WHERE)
+  (knownWhoEatsIn WHO WHERE WHAT)(!) )
+((whoEatsIn WHO WHAT WHERE)
+  (solveZebra P)(member (WHERE WHO WHAT _ _ ) P)
+  (decide3 knownWhoEatsIn WHO WHERE WHAT))
 
 
 % Printing Functions
