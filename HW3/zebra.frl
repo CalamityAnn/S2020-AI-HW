@@ -133,9 +133,11 @@
 
 % Generates a solution
 ((solve P P))
+  % if SOL is full and meets base criteria, we're done
 ((solve SOL P)
   (base SOL) (full SOL)
   (solve SOL SOL))
+  % O/W backtrack
 ((solve SOL P)
   % Backtracking code here...
 )
