@@ -90,6 +90,42 @@
 ((decide QUALITY WHO WHAT)
   (addcl ((QUALITY WHO WHAT)) ))
 
+% Domains
+((color (
+  Red
+  Blue
+  Green
+  Ivory
+  Yellow
+)))
+((nationality (
+  Englishman
+  Spaniard
+  Norwegian
+  Japanese
+  Ukranian
+)))
+((candy (
+  Hersheys
+  KitKats
+  Smarties
+  Snickers
+  MilkyWays
+)))
+((drink (
+  Tea
+  OJ
+  Coffee
+  Milk
+  Wine
+)))
+((pet (
+  Dog
+  Horse
+  Fox
+  Snails
+  Zebra
+)))
 
 % Solves Zebra puzzle
 ((solveZebra P) (solved P))
