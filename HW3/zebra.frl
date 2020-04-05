@@ -128,12 +128,22 @@
 )))
 
 % Check if all values set
-((full (( A B C D E ) ( F G H I J ) ( K L M N O ) ( P Q R S T ) ( U V W X Y ))))
+((full (( A B C D E ) ( F G H I J ) ( K L M N O ) ( P Q R S T ) ( U V W X Y )) ))
 ((full _ ) (fail))
+
+% Generates a solution
+((solve P P))
+((solve SOL P)
+  (base SOL) (full SOL)
+  (solve SOL SOL))
+((solve SOL P)
+  % Backtracking code here...
+)
 
 % Solves Zebra puzzle
 ((solveZebra P) (solved P))
 ((solveZebra P)
+  % kill old solution & known query results
   (kill solved)
   (kill knownColor)
   (kill knownDrinkIn)
@@ -142,7 +152,11 @@
   (kill knownToDrink)
   (kill knownToEat)
   (kill knownPetIn)
-  % INSERT SOLVING LOGIC
+
+  % solve
+  (solve (() () () () ()) P)
+
+  % assert solution into state
   (addcl ((solved P)) ))
 
 % Color <-> Nationality Query
