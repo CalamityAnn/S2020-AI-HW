@@ -52,6 +52,14 @@
   (middle ( _ _ _ Milk _ ) STREET)
 )
 
+((extra STREET)
+  % Make sure there's a zebra somewhere
+  (onStreet ( _ _ _ _ Zebra) STREET)
+
+  % Make sure there's wine somewhere
+  (onStreet ( _ _ _ Wine _ ) STREET)
+)
+
 /*
   Utility predicates from list_pro
 */
@@ -111,66 +119,14 @@
 ((decide QUALITY WHO WHAT)
   (addcl ((QUALITY WHO WHAT)) ))
 
-% Domains
-((colors (
-  Red
-  Blue
-  Green
-  Ivory
-  Yellow
-)))
-((nationalities (
-  Englishman
-  Spaniard
-  Norwegian
-  Japanese
-  Ukranian
-)))
-((candies (
-  Hersheys
-  KitKats
-  Smarties
-  Snickers
-  MilkyWays
-)))
-((drinks (
-  Tea
-  OrangeJ
-  Coffee
-  Milk
-  Wine
-)))
-((pets (
-  Dog
-  Horse
-  Fox
-  Snails
-  Zebra
-)))
-
-% Check if all values set
-((full (( A B C D E ) ( F G H I J ) ( K L M N O ) ( P Q R S T ) ( U V W X Y )) ))
-((full _ ) (fail))
-
-% Generates a solution
-((solve P P))
-  % if SOL is full and meets base criteria, we're done
-((solve SOL P)
-  (base SOL) (full SOL)
-  (solve SOL SOL))
-  % O/W backtrack
-((solve SOL P)
-  % Backtracking code here...
-)
-
 % Solves Zebra puzzle
 ((solveZebra P) (solved P))
 ((solveZebra P)
   % kill old solution & known query results
   (kill solved)
   (kill knownColor)
-  (kill knownDrinkIn)
-  (kill knownEatIn)
+  (kill knownDrunkIn)
+  (kill knownEatenIn)
   (kill knownPet)
   (kill knownToDrink)
   (kill knownToEat)
@@ -178,14 +134,18 @@
 
   % solve
   (base P)
+  (extra P)
+  (forall ((member H P)) (
+    (pp H)
+  ))
 
   % assert solution into state
   (addcl ((solved P)) ))
 
 % Color <-> Nationality Query
-((color WHO WHAT)
+((isColored WHO WHAT)
   (knownColor WHO WHAT)(!) )
-((color WHO WHAT)
+((isColored WHO WHAT)
   (solveZebra P)(member (WHAT WHO _ _ _) P)
   (decide knownColor WHO WHAT))
 
@@ -204,31 +164,31 @@
   (decide knownToEat WHO WHAT))
 
 % Pet <-> Nationality query
-((pet WHO WHAT)
+((hasPet WHO WHAT)
   (knownPet WHO WHAT)(!) )
-((pet WHO WHAT)
+((hasPet WHO WHAT)
   (solveZebra P)(member (_ WHO _ _ WHAT) P)
   (decide knownPet WHO WHAT))
 
 
 % Drink <-> House query
-((drinks WHERE WHAT)
-  (knownDrinkIn WHERE WHAT)(!) )
-((drinks WHERE WHAT)
+((drunkIn WHAT WHERE)
+  (knownDrunkIn WHERE WHAT)(!) )
+((drunkIn WHAT WHERE)
   (solveZebra P)(member (WHERE _ _ WHAT _) P)
-  (decide knownDrinkIn WHERE WHAT))
+  (decide knownDrunkIn WHERE WHAT))
 
 % Candy <-> House query
-((eats WHERE WHAT)
-  (knownEatIn WHERE WHAT)(!) )
-((eats WHERE WHAT)
+((eatenIn WHAT WHERE)
+  (knownEatenIn WHERE WHAT)(!) )
+((eatenIn WHAT WHERE)
   (solveZebra P)(member (WHERE _ WHAT _ _) P)
-  (decide knownEatIn WHERE WHAT))
+  (decide knownEatenIn WHERE WHAT))
 
 % Pet <-> House query
-((pet WHERE WHAT)
+((petIn WHAT WHERE)
   (knownPetIn WHERE WHAT)(!) )
-((pet WHERE WHAT)
+((petIn WHAT WHERE)
   (solveZebra P)(member (WHERE _ _ _ WHAT) P)
   (decide knownPetIn WHERE WHAT))
 
