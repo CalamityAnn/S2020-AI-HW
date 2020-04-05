@@ -127,6 +127,10 @@
   Zebra
 )))
 
+% Check if all values set
+((full (( A B C D E ) ( F G H I J ) ( K L M N O ) ( P Q R S T ) ( U V W X Y ))))
+((full _ ) (fail))
+
 % Solves Zebra puzzle
 ((solveZebra P) (solved P))
 ((solveZebra P)
